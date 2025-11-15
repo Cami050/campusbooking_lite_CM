@@ -25,8 +25,7 @@ class EspacioController extends Controller
      */
     public function create()
     {
-        $espacios = Espacio::orderBy('nombre')->paginate(10); //cambiar el espacios index por create
-        return redirect()->route('espacios.index')->with('ok', 'Espacio creado correctamente');
+        return view('espacios.create');
     }
 
     /**
@@ -45,7 +44,7 @@ class EspacioController extends Controller
         ]);
 
         Espacio::create($data);
-        return redirect()->route('espacios.index')->with('ok', 'Cambiar mensaje');
+        return redirect()->route('espacios.index')->with('ok', 'Espacios asignados');
     }
 
     /**
@@ -54,10 +53,11 @@ class EspacioController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Espacio $espacio)
     {
-        //
+        return view('espacios.show', compact('espacio'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -67,8 +67,9 @@ class EspacioController extends Controller
      */
     public function edit($id)
     {
-        $espacios = Espacio::findOrFail($id);
+        $espacio = Espacio::findOrFail($id);
         return view('espacios.edit', compact('espacio'));
+
     }
 
     /**
@@ -102,6 +103,7 @@ class EspacioController extends Controller
      */
     public function destroy($id)
     {
+        $espacio = Espacio::findOrFail($id);
         $espacio->delete();
         return redirect()->route('espacios.index')->with('ok','espacio eliminado');
     }

@@ -5,12 +5,11 @@
 @section('contenido')
 <h1 class="h3 mb-3">Editar espacio</h1>
 
-<form action="{{ route('espacios.update', $espacio) }}" method="POST" class="row g-3">
+<form action="{{ route('espacios.update', $espacio->id) }}" method="POST" class="row g-3">
     @csrf
     @method('PUT')
 
-    @include('productos.partials.form')
-        
+    @include('espacios.partials.form')
 
     <div>
         <button class="btn btn-primary">Actualizar</button>

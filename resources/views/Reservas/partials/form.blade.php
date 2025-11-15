@@ -1,43 +1,65 @@
 <div class="col-md-6">
-    <label for="nombre" class="form-label">Nombre</label>
+    <label for="solicitante" class="form-label">Solicitante</label>
     <input 
         type="text" 
-        name="nombre" 
-        id="nombre" 
+        name="solicitante" 
+        id="solicitante" 
         class="form-control" 
-        value="{{ old('nombre', $vendedor->nombre ?? '') }}" 
+        value="{{ old('solicitante', $reserva->solicitante ?? '') }}" 
         required>
 </div>
 
 <div class="col-md-6">
-    <label for="cargo" class="form-label">Cargo</label>
+    <label for="espacio_id" class="form-label">Espacio</label>
+    <select name="espacio_id" id="espacio_id" class="form-select" required>
+        <option value="">Seleccione un espacio...</option>
+        @foreach($espacios as $e)
+            <option value="{{ $e->id }}" 
+                {{ old('espacio_id', $reserva->espacio_id ?? '') == $e->id ? 'selected' : '' }}>
+                {{ $e->nombre }}
+            </option>
+        @endforeach
+    </select>
+</div>
+
+<div class="col-md-4">
+    <label for="fecha" class="form-label">Fecha</label>
     <input 
-        type="text" 
-        name="cargo" 
-        id="cargo" 
+        type="date" 
+        name="fecha" 
+        id="fecha" 
         class="form-control" 
-        value="{{ old('cargo', $vendedor->cargo ?? '') }}" 
+        value="{{ old('fecha', $reserva->fecha ?? '') }}" 
         required>
 </div>
 
-<div class="col-md-6">
-    <label for="telefono" class="form-label">Teléfono</label>
+<div class="col-md-4">
+    <label for="hora_inicio" class="form-label">Hora inicio</label>
     <input 
-        type="number" 
-        name="telefono" 
-        id="telefono" 
+        type="time" 
+        name="hora_inicio" 
+        id="hora_inicio" 
         class="form-control" 
-        value="{{ old('telefono', $vendedor->telefono ?? '') }}" 
+        value="{{ old('hora_inicio', $reserva->hora_inicio ?? '') }}" 
         required>
 </div>
 
-<!-- Ejemplo -->
+<div class="col-md-4">
+    <label for="hora_fin" class="form-label">Hora fin</label>
+    <input 
+        type="time" 
+        name="hora_fin" 
+        id="hora_fin" 
+        class="form-control" 
+        value="{{ old('hora_fin', $reserva->hora_fin ?? '') }}" 
+        required>
+</div>
 
-<select name="espacio_id" class="form-select" required>
-    <option value="">Seleccione un espacio...</option>
-    @foreach($espacios as $e)
-        <option value="{{ $e->id }}" {{ old('espacio_id', $reserva->espacio_id ?? '') == $e->id ? 'selected' : '' }}>
-            {{ $e->nombre }}
-        </option>
-    @endforeach
-</select>
+<div class="col-12">
+    <label for="motivo" class="form-label">Motivo</label>
+    <textarea 
+        name="motivo" 
+        id="motivo" 
+        class="form-control" 
+        rows="3">{{ old('motivo', $reserva->motivo ?? '') }}</textarea>
+</div>

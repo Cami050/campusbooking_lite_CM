@@ -5,43 +5,40 @@
         class="form-control" 
         id="nombre" 
         name="nombre"
-        value="{{ old('nombre', $producto->nombre ?? '') }}"
+        value="{{ old('nombre', $espacio->nombre ?? '') }}"
         required>
 </div>
 
 <div class="col-md-6">
-    <label for="tipo" class="form-label">tipo</label>
+    <label for="tipo" class="form-label">Tipo</label>
     <input 
-        type="number" 
+        type="text" 
         class="form-control" 
         id="tipo" 
         name="tipo"
-        value="{{ old('tipo', $producto->tipo ?? '') }}" 
-        step="0.01" 
-        min="0"
+        value="{{ old('tipo', $espacio->tipo ?? '') }}"
         required>
 </div>
 
 <div class="col-md-6">
-    <label for="capacidad" class="form-label">capacidad</label>
+    <label for="capacidad" class="form-label">Capacidad</label>
     <input 
         type="number" 
         class="form-control" 
         id="capacidad"
         name="capacidad"
-        value="{{ old('capacidad', $producto->capacidad ?? '') }}" 
-        min="0"
+        value="{{ old('capacidad', $espacio->capacidad ?? '') }}"
+        min="1"
         required>
 </div>
 
 <div class="col-md-6">
-    <label for="ubicacion" class="form-label">ubicacion</label>
+    <label for="ubicacion" class="form-label">Ubicación</label>
     <input 
-        type="number" 
+        type="text" 
         class="form-control" 
         id="ubicacion"
         name="ubicacion"
-        value="{{ old('ubicacion', $producto->ubicacion ?? '') }}" 
-        min="0"
+        value="{{ old('ubicacion', $espacio->ubicacion ?? '') }}"
         required>
 </div>

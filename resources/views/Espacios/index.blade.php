@@ -17,7 +17,7 @@
                     <th>Nombre</th>
                     <th>Tipo</th>
                     <th>Capacidad</th>
-                    <th>Ubicacion</th>
+                    <th>Ubicación</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -25,12 +25,13 @@
                 @foreach($espacios as $e)
                 <tr>
                     <td>{{ $e->id }}</td>
-                    <td><a href="{{ route('espacios.show', $e) }}">{{ $e->nombre }}</a></td>
+                    <td>{{ $e->nombre }}</td>
                     <td>{{ $e->tipo }}</td>
                     <td>{{ $e->capacidad }}</td>
                     <td>{{ $e->ubicacion }}</td>
                     <td class="d-flex gap-2">
                         <a class="btn btn-sm btn-outline-secondary" href="{{ route('espacios.edit', $e) }}">Editar</a>
+
                         <form action="{{ route('espacios.destroy', $e) }}" method="POST" onsubmit="return confirm('¿Eliminar: {{ $e->nombre }}?')">
                             @csrf
                             @method('DELETE')
@@ -43,14 +44,9 @@
         </table>
     </div>
 @else
-    <p class="text-muted">No hay Espacios reservados aún.</p>
+    <p class="text-muted">No hay espacios registrados aún.</p>
 @endif
 
 {{ $espacios->links() }}
 
 @endsection
-
-<!-- Se agrega al final -->
-  <!-- para espacios -->
-<!-- {{ $reservas->links() }} para reservas -->
-
