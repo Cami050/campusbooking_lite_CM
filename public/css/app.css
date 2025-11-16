@@ -1,0 +1,9 @@
+.pagination .page-link {
+    font-size: 0.75rem !important;   /* Reduce tamaño de número y flechas */
+    padding: 4px 8px !important;     /* Reduce espacio interno */
+}
+
+.pagination .page-item svg {
+    width: 12px;
+    height: 12px;
+}

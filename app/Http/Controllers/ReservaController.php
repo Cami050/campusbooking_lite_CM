@@ -101,37 +101,62 @@ class ReservaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Reserva $reserva)
-    {
-        $data = $request->validate([
-            'espacio_id'   => 'required|exists:espacios,id',
-            'solicitante'  => 'required|string|max:255',
-            'fecha'        => 'required|date',
-            'hora_inicio'  => 'required|date_format:H:i',
-            'hora_fin'     => 'required|date_format:H:i|after:hora_inicio',
-            'motivo'       => 'nullable|string',
-        ]);
+{
+    // ✔ Mensajes personalizados mejorados
+    $messages = [
+        'espacio_id.required' => 'Por favor selecciona un espacio para la reserva.',
+        'espacio_id.exists'   => 'El espacio seleccionado no existe en el sistema.',
 
-        // De mas: 
-        $existe = Reserva::where('espacio_id', $request->espacio_id)
+        'solicitante.required' => 'Debes ingresar el nombre del solicitante.',
+        'solicitante.max'      => 'El nombre del solicitante es demasiado largo.',
+
+        'fecha.required' => 'Por favor selecciona una fecha para la reserva.',
+        'fecha.date'     => 'La fecha ingresada no es válida.',
+
+        'hora_inicio.required' => 'Debes ingresar la hora de inicio.',
+        'hora_inicio.date_format' => 'La hora de inicio debe tener el formato HH:MM. actualizado',
+
+        'hora_fin.required'    => 'Debes ingresar la hora de finalización.',
+        'hora_fin.date_format' => 'La hora final debe tener el formato HH:MM.actualizado',
+        'hora_fin.after'       => 'La hora de finalización debe ser posterior a la hora de inicio.',
+
+        'motivo.string' => 'El motivo debe ser un texto válido.',
+    ];
+
+    // ✔ Validación con los mensajes personalizados
+    $data = $request->validate([
+        'espacio_id'   => 'required|exists:espacios,id',
+        'solicitante'  => 'required|string|max:255',
+        'fecha'        => 'required|date',
+        'hora_inicio'  => 'required|date_format:H:i',
+        'hora_fin'     => 'required|date_format:H:i|after:hora_inicio',
+        'motivo'       => 'nullable|string',
+    ], $messages);
+
+    // ✔ Validación de solapamiento
+    $existe = Reserva::where('espacio_id', $request->espacio_id)
         ->where('fecha', $request->fecha)
         ->where('id', '!=', $reserva->id)
         ->where(function ($q) use ($request) {
             $q->where('hora_inicio', '<', $request->hora_fin)
-            ->where('hora_fin', '>', $request->hora_inicio);
+              ->where('hora_fin', '>', $request->hora_inicio);
         })
         ->exists();
 
-            if ($existe) {
-                return back()
-                    ->withErrors(['La hora seleccionada se cruza con otra reserva existente.'])
-                    ->withInput();
+    if ($existe) {
+        return back()
+            ->withErrors(['La hora seleccionada se cruza con otra reserva existente. Por favor elige un horario diferente.'])
+            ->withInput();
+    }
+
+    // ✔ Actualizar con los datos validados
+    $reserva->update($data);
+
+    return redirect()
+        ->route('reservas.index')
+        ->with('ok', 'La reserva fue actualizada exitosamente.');
 }
 
-
-        $reserva->update($data);
-
-        return redirect()->route('reservas.index')->with('ok', 'Reserva actualizada correctamente');
-    }
 
     /**
      * Remove the specified resource from storage.

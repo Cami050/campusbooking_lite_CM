@@ -30,6 +30,7 @@
                     <td>{{ $e->capacidad }}</td>
                     <td>{{ $e->ubicacion }}</td>
                     <td class="d-flex gap-2">
+                        <a class="btn btn-sm btn-info" href="{{ route('espacios.show', $e) }}">Ver</a>
                         <a class="btn btn-sm btn-outline-secondary" href="{{ route('espacios.edit', $e) }}">Editar</a>
 
                         <form action="{{ route('espacios.destroy', $e) }}" method="POST" onsubmit="return confirm('¿Eliminar: {{ $e->nombre }}?')">

@@ -1,64 +1,148 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+#  CampusBooking Lite – Espacios y Reservas  
+**Proyecto en Laravel – CRUD de Espacios y Reservas**
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto implementa un sistema ligero para gestionar **Espacios** (aulas, laboratorios, salas) y **Reservas** internas de manera simple: crear, listar, editar y eliminar.  
+Cumple con los requisitos establecidos en la guía **GTH-F-062 V10**.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+##  1. Contexto  
+La sede necesita un módulo interno mínimo para registrar espacios y gestionar reservas básicas.  
+El sistema **NO** requiere autenticación, búsquedas avanzadas ni reglas complejas.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#  2. Alcance  
 
-## Learning Laravel
+### ✔ Incluye:
+- Proyecto Laravel completo.
+- 2 entidades:
+  - **Espacio**
+  - **Reserva**
+- Migraciones + Modelos + Controladores Resource + Vistas Blade.
+- Relación **1 – N**:
+  - Un *Espacio* tiene muchas *Reservas*.
+  - Una *Reserva* pertenece a un *Espacio*.
+- Paginación simple (10 por página).
+- Mensajes flash en create/update/delete.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+###  Excluye:
+- Autenticación
+- Soft deletes
+- Búsquedas/filtrado
+- Validación estricta de solapamientos (aunque se implementó como mejora)
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-## Laravel Sponsors
+#  3. Requisitos funcionales  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+##  CRUD de Espacios
+**Campos:**
+- id
+- nombre (req)
+- tipo (req)
+- capacidad (req ≥ 1)
+- ubicación (req)
+- timestamps
 
-### Premium Partners
+**Validación:**
+- `nombre`, `tipo`, `ubicacion`: `required|string|max:255`
+- `capacidad`: `required|integer|min:1`
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+---
 
-## Contributing
+##  CRUD de Reservas
+**Campos:**
+- id  
+- espacio_id (FK)
+- solicitante (req)
+- fecha (date req)
+- hora_inicio (time req)
+- hora_fin (time req)
+- motivo (nullable)
+- timestamps
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**Validación:**
+- `espacio_id`: required|exists:espacios,id  
+- `solicitante`: required|string|max:255  
+- `fecha`: required|date  
+- `hora_inicio`, `hora_fin`: required|date_format:H:i  
 
-## Code of Conduct
+**Requisito:**  
+En la tabla de Reservas se muestra el **nombre del Espacio** vía relación.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+---
 
-## Security Vulnerabilities
+#  4. Implementación técnica  
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+###  Modelos | Relaciones  
+Entregadas en la guia **GTH-F-062 V10**.
 
-## License
+#   5. Rutas principales 
+Una ruta en espacios el controlador
+Una ruta en espacios para reservas 
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+# 6. Vistas Blade mínimas
+
+Para cada entidad:
+
+- index.blade.php
+- create.blade.php
+- edit.blade.php
+- show.blade.php
+- partials/form.blade.php
+
+# 7. Instalación del proyecto
+Clonar repositorio
+- git clone https://github.com/tuusuario/campusbooking_lite_CM.git
+- cd campusbooking_lite_CM
+
+
+# Instalar o verificar dependencias
+Ver capturas de pantalla 
+
+# 8. Capturas de pantalla
+
+
+### Comprobación de herramientas instaladas
+
+#### PHP
+![PHP Version](docs/screenshots/php version.jpg)
+
+#### Node
+![Node Version](docs/screenshots/Node version.jpg)
+
+#### NPM
+![NPM Version](docs/screenshots/npm version.jpg)
+
+#### Composer
+![Composer Version](docs/screenshots/composer version.jpg)
+
+#### Git
+![Git Version](docs/screenshots/git version.jpg)
+
+#### Laravel
+![Laravel Version](docs/screenshots/Laravel version.jpg)
+
+#### Migraciones
+![Migraciones](docs/screenshots/Migraciones.jpg)
+
+#### Comandos subir repositorio a git
+![Comandos Git](docs/screenshots/comandos subir repositorio a git.jpg)
+
+#### Comandos framework
+![Comandos Framework](docs/screenshots/comandos framework.jpg)
+
+---
+
+# 9. Videos del funcionamiento
+
+Guarda los videos en:
+
+
+### CRUD funcional – Video 1
+[Ver video 1](docs/videos/Lista de CRUD funcional 1  - Brave 2025-11-15 19-52-47.mp4)
+
+### CRUD funcional – Video 2
+[Ver video 2](docs/videos/Lista de CRUD funcional 2 - Brave 2025-11-15 18-33-13.mp4)

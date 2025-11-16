@@ -42,9 +42,8 @@
                     <td>{{ $r->hora_fin }}</td>
                     <td>{{ $r->motivo ? Str::limit($r->motivo, 30) : '-' }}</td>
                     <td class="d-flex gap-2">
-                        <a class="btn btn-sm btn-outline-secondary" 
-                           href="{{ route('reservas.edit', $r) }}">Editar</a>
-
+                        <a class="btn btn-sm btn-info" href="{{ route('reservas.show', $r) }}">Ver</a>
+                        <a class="btn btn-sm btn-outline-secondary" href="{{ route('reservas.edit', $r) }}">Editar</a>
                         <form action="{{ route('reservas.destroy', $r) }}" method="POST"
                               onsubmit="return confirm('¿Eliminar la reserva de {{ $r->solicitante }}?')">
                             @csrf

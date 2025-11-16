@@ -14,7 +14,7 @@ class EspacioController extends Controller
      */
     public function index()
     {
-        $espacios = Espacio::orderBy('nombre')->paginate(10);
+        $espacios = Espacio::orderBy('id')->paginate(10);
         return view('espacios.index', compact('espacios'));
     }
 
